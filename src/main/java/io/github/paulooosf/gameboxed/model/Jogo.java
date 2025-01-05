@@ -1,5 +1,6 @@
 package io.github.paulooosf.gameboxed.model;
 
+import io.github.paulooosf.gameboxed.dto.JogoEntradaDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -39,18 +40,30 @@ public class Jogo {
     public Jogo() {
     }
 
-    public Jogo(Long id, String nome, String descricao, String empresa, Integer ano, Double nota, Integer quantidadeAvaliacoes,
-                String linkCapa, String linkBanner, String linkTrailer) {
+    public Jogo(Long id, String nome, String descricao, String empresa, Integer ano, String linkCapa, String linkBanner,
+                String linkTrailer) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.empresa = empresa;
         this.ano = ano;
-        this.nota = nota;
-        this.quantidadeAvaliacoes = quantidadeAvaliacoes;
+        this.nota = 0.0;
+        this.quantidadeAvaliacoes = 0;
         this.linkCapa = linkCapa;
         this.linkBanner = linkBanner;
         this.linkTrailer = linkTrailer;
+    }
+
+    public Jogo(JogoEntradaDTO jogo) {
+        this.nome = jogo.nome();
+        this.descricao = jogo.descricao();
+        this.empresa = jogo.empresa();
+        this.ano = jogo.ano();
+        this.nota = 0.0;
+        this.quantidadeAvaliacoes = 0;
+        this.linkCapa = jogo.linkCapa();
+        this.linkBanner = jogo.linkBanner();
+        this.linkTrailer = jogo.linkTrailer();
     }
 
     public Long getId() {

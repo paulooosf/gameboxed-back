@@ -1,5 +1,6 @@
 package io.github.paulooosf.gameboxed.service;
 
+import io.github.paulooosf.gameboxed.dto.JogoEntradaDTO;
 import io.github.paulooosf.gameboxed.dto.JogoListarDTO;
 import io.github.paulooosf.gameboxed.dto.JogoSaidaDTO;
 import io.github.paulooosf.gameboxed.model.Jogo;
@@ -29,8 +30,8 @@ public class JogoService {
         return new JogoSaidaDTO(jogoOpt.get());
     }
 
-    public JogoSaidaDTO cadastrar(Jogo jogo) {
-        repository.save(jogo);
+    public JogoSaidaDTO cadastrar(JogoEntradaDTO jogoDTO) {
+        Jogo jogo = repository.save(jogoDTO.converter());
         return new JogoSaidaDTO(jogo);
     }
 

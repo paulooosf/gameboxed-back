@@ -1,5 +1,6 @@
 package io.github.paulooosf.gameboxed.controller;
 
+import io.github.paulooosf.gameboxed.dto.JogoEntradaDTO;
 import io.github.paulooosf.gameboxed.dto.JogoListarDTO;
 import io.github.paulooosf.gameboxed.dto.JogoSaidaDTO;
 import io.github.paulooosf.gameboxed.model.Jogo;
@@ -8,7 +9,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -33,9 +33,9 @@ public class JogoController {
     }
 
     @PostMapping
-    public ResponseEntity<JogoSaidaDTO> cadastrar(@Valid @RequestBody Jogo jogo) {
+    public ResponseEntity<JogoSaidaDTO> cadastrar(@Valid @RequestBody JogoEntradaDTO jogo) {
         JogoSaidaDTO jogoDTO = service.cadastrar(jogo);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(jogo.getId()).toUri();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(jogoDTO.id()).toUri();
         return ResponseEntity.created(uri).body(jogoDTO);
     }
 
