@@ -23,22 +23,21 @@ public class JogoService {
         return jogos.map(JogoListarDTO::new);
     }
 
-    public Optional<JogoSaidaDTO> buscar(Long id) {
+    public JogoSaidaDTO buscar(Long id) {
         Optional<Jogo> jogoOpt = repository.findById(id);
         ValidarJogoExistente.validar(jogoOpt);
-        var dto = new JogoSaidaDTO(jogoOpt.get());
-        return Optional.of(dto);
+        return new JogoSaidaDTO(jogoOpt.get());
     }
 
-    public Optional<JogoSaidaDTO> editar(Long id, Jogo jogo) {
-        Optional<Jogo> jogoOpt = repository.findById(id);
-        ValidarJogoExistente.validar(jogoOpt);
+    public JogoSaidaDTO cadastrar(Jogo jogo) {
+        repository.save(jogo);
+        return new JogoSaidaDTO(jogo);
+    }
 
-        Jogo jogoExistente = jogoOpt.get();
-        jogoExistente.editarJogo(jogo);
-        jogoExistente = repository.save(jogoExistente);
-
-        return Optional.of(new JogoSaidaDTO(jogoExistente));
+    public JogoSaidaDTO editar(Long id, Jogo jogo) {
+        ValidarJogoExistente.validar(repository.findById(id));
+        jogo.setId(id);
+        return new JogoSaidaDTO(repository.save(jogo));
     }
 
     public void deletar(Long id) {
