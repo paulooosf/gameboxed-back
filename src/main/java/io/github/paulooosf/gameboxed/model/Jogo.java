@@ -132,4 +132,17 @@ public class Jogo {
     public void setLinkTrailer(String linkTrailer) {
         this.linkTrailer = linkTrailer;
     }
+
+    public void editarJogo(Jogo jogo) {
+        this.id = jogo.getId();
+        this.nome = jogo.getNome();
+        this.descricao = jogo.getDescricao();
+        this.empresa = jogo.getEmpresa();
+        this.ano = jogo.getAno();
+        this.nota = jogo.getNota();
+        this.quantidadeAvaliacoes = jogo.getQuantidadeAvaliacoes();
+        this.linkCapa = jogo.getLinkCapa();
+        this.linkBanner = jogo.getLinkBanner();
+        this.linkTrailer = jogo.getLinkTrailer();
+    }
 }
