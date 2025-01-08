@@ -40,8 +40,8 @@ public class JogoController {
     }
 
     @PutMapping("/editar/{id}")
-    public ResponseEntity<JogoSaidaDTO> editar(@PathVariable Long id, @Valid @RequestBody Jogo jogo) {
-        return ResponseEntity.ok(service.editar(id, jogo));
+    public ResponseEntity<JogoSaidaDTO> editar(@PathVariable Long id, @Valid @RequestBody JogoEntradaDTO jogo) {
+        return ResponseEntity.ok(service.editar(id, jogo.converter()));
     }
 
     @DeleteMapping("/deletar/{id}")
