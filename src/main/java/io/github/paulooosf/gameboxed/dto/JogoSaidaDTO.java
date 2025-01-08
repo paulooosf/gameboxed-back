@@ -4,16 +4,16 @@ import io.github.paulooosf.gameboxed.model.Jogo;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record JogoSaidaDTO(@NotNull Long id,
-                           @NotBlank String nome,
-                           @NotBlank String descricao,
-                           @NotBlank String empresa,
-                           @NotNull Integer ano,
+public record JogoSaidaDTO(@NotNull(message = "ID Não preenchido!") Long id,
+                           @NotBlank(message = "Nome não preenchido!") String nome,
+                           @NotBlank(message = "Descrição não preenchida!") String descricao,
+                           @NotBlank(message = "Empresa não preenchida!") String empresa,
+                           @NotNull(message = "Ano não preenchido!") Integer ano,
                            Double nota,
-                           @NotNull Integer quantidadeAvaliacoes,
-                           @NotBlank String linkCapa,
-                           @NotBlank String linkBanner,
-                           @NotBlank String linkTrailer
+                           @NotNull(message = "Quantidade de avaliações não preenchida!") Integer quantidadeAvaliacoes,
+                           @NotBlank(message = "Link da capa não preenchido!") String linkCapa,
+                           @NotBlank(message = "Link do banner não preenchido!") String linkBanner,
+                           @NotBlank(message = "Link do trailer não preenchido!") String linkTrailer
                            ) {
     public JogoSaidaDTO(Jogo jogo) {
         this(jogo.getId(), jogo.getNome(), jogo.getDescricao(), jogo.getEmpresa(), jogo.getAno(), jogo.getNota(),
