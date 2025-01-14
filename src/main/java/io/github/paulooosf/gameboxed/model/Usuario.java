@@ -1,6 +1,7 @@
 package io.github.paulooosf.gameboxed.model;
 
 import io.github.paulooosf.gameboxed.Enum.Role;
+import io.github.paulooosf.gameboxed.dto.UsuarioEntradaDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,8 +13,8 @@ public class Usuario {
     @Column(name = "usu_cd_id")
     private Long id;
 
-    @Column(name = "usu_txt_usuario", length = 25, unique = true, nullable = false)
-    private String usuario;
+    @Column(name = "usu_txt_apelido", length = 25, unique = true, nullable = false)
+    private String apelido;
 
     @Column(name = "usu_txt_email", length = 70, nullable = false)
     private String email;
@@ -28,12 +29,19 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(Long id, String usuario, String email, String senha, Role role) {
+    public Usuario(Long id, String apelido, String email, String senha) {
         this.id = id;
-        this.usuario = usuario;
+        this.apelido = apelido;
         this.email = email;
         this.senha = senha;
-        this.role = role;
+        this.role = Role.ROLE_USUARIO;
+    }
+
+    public Usuario(UsuarioEntradaDTO usuario) {
+        this.apelido = usuario.apelido();
+        this.email = usuario.email();
+        this.senha = usuario.senha();
+        this.role = Role.ROLE_USUARIO;
     }
 
     public Long getId() {
@@ -44,12 +52,12 @@ public class Usuario {
         this.id = id;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String getApelido() {
+        return apelido;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setApelido(String apelido) {
+        this.apelido = apelido;
     }
 
     public String getEmail() {
