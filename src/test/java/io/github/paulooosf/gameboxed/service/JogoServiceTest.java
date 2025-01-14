@@ -43,7 +43,7 @@ class JogoServiceTest {
     @DisplayName("Deve listar todos os jogos cadastrados")
     void listar() {
         Pageable pageable = PageRequest.of(0, 10);
-        List<Jogo> jogos = List.of(criarJogo("Jogo Teste"));
+        List<Jogo> jogos = List.of(this.criarJogo("Jogo Teste"));
 
         Page<Jogo> pagina = new PageImpl<>(jogos);
 
@@ -80,7 +80,7 @@ class JogoServiceTest {
     }
 
     @Test
-    @DisplayName("Deve cadastrar com sucesso")
+    @DisplayName("Deve cadastrar um jogo com sucesso")
     void cadastrar() {
         var jogoDTO = new JogoEntradaDTO("Jogo Teste", "1", "1", 2025,
                 "Teste", "Teste", "Teste");
@@ -96,7 +96,7 @@ class JogoServiceTest {
     }
 
     @Test
-    @DisplayName("Deve editar com sucesso")
+    @DisplayName("Deve editar um jogo com sucesso")
     void editarCaso1() {
         Jogo jogoExistente = this.criarJogo("Jogo Velho");
         Jogo jogoAtualizado = this.criarJogo("Jogo Atualizado");
