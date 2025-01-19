@@ -1,6 +1,7 @@
 package io.github.paulooosf.gameboxed.model;
 
 import io.github.paulooosf.gameboxed.dto.JogoEntradaDTO;
+import io.github.paulooosf.gameboxed.dto.JogoListarDTO;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -174,5 +175,9 @@ public class Jogo {
     public void atualizarNota(Double nota) {
         this.nota = (this.nota * this.quantidadeAvaliacoes + nota) / (this.quantidadeAvaliacoes + 1);
         this.quantidadeAvaliacoes++;
+    }
+
+    public JogoListarDTO toDto() {
+        return new JogoListarDTO(this.id, this.nome, this.nota, this.linkCapa);
     }
 }
