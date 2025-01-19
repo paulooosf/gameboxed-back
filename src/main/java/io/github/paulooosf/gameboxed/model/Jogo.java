@@ -86,10 +86,6 @@ public class Jogo {
         return nome;
     }
 
-    public void setNome() {
-        this.nome = nome;
-    }
-
     public String getDescricao() {
         return descricao;
     }
@@ -177,5 +173,6 @@ public class Jogo {
 
     public void atualizarNota(Double nota) {
         this.nota = (this.nota * this.quantidadeAvaliacoes + nota) / (this.quantidadeAvaliacoes + 1);
+        this.quantidadeAvaliacoes++;
     }
 }
