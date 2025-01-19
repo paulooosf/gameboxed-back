@@ -3,6 +3,9 @@ package io.github.paulooosf.gameboxed.model;
 import io.github.paulooosf.gameboxed.dto.JogoEntradaDTO;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "JOGO")
 public class Jogo {
@@ -37,6 +40,9 @@ public class Jogo {
     @Column(name = "jog_txt_link_trailer")
     private String linkTrailer;
 
+    @OneToMany(mappedBy = "jogo", cascade = CascadeType.ALL)
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
+
     public Jogo() {
     }
 
@@ -52,6 +58,7 @@ public class Jogo {
         this.linkCapa = linkCapa;
         this.linkBanner = linkBanner;
         this.linkTrailer = linkTrailer;
+        this.avaliacoes = new ArrayList<>();
     }
 
     public Jogo(JogoEntradaDTO jogo) {
@@ -64,6 +71,7 @@ public class Jogo {
         this.linkCapa = jogo.linkCapa();
         this.linkBanner = jogo.linkBanner();
         this.linkTrailer = jogo.linkTrailer();
+        this.avaliacoes = new ArrayList<>();
     }
 
     public Long getId() {
@@ -146,6 +154,14 @@ public class Jogo {
         this.linkTrailer = linkTrailer;
     }
 
+    public List<Avaliacao> getAvaliacoes() {
+        return avaliacoes;
+    }
+
+    public void setAvaliacoes(List<Avaliacao> avaliacoes) {
+        this.avaliacoes = avaliacoes;
+    }
+
     public void editarJogo(Jogo jogo) {
         this.id = jogo.getId();
         this.nome = jogo.getNome();
@@ -157,5 +173,9 @@ public class Jogo {
         this.linkCapa = jogo.getLinkCapa();
         this.linkBanner = jogo.getLinkBanner();
         this.linkTrailer = jogo.getLinkTrailer();
+    }
+
+    public void atualizarNota(Double nota) {
+        this.nota = (this.nota * this.quantidadeAvaliacoes + nota) / (this.quantidadeAvaliacoes + 1);
     }
 }
