@@ -11,7 +11,7 @@ public record JogoEntradaDTO(@NotBlank(message = "Preencha o nome!") String nome
                            @NotBlank(message = "Preencha o link da capa!") String linkCapa,
                            @NotBlank(message = "Preencha o link do banner!") String linkBanner,
                            @NotBlank(message = "Preencha o link do trailer!") String linkTrailer
-) {
+                            ) {
     public JogoEntradaDTO(Jogo jogo) {
         this(jogo.getNome(), jogo.getDescricao(), jogo.getEmpresa(), jogo.getAno(), jogo.getLinkCapa(),
                 jogo.getLinkBanner(), jogo.getLinkTrailer());
