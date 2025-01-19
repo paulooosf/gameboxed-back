@@ -16,14 +16,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/jogo")
+@RequestMapping("/jogos")
 public class JogoController {
 
     @Autowired
     private JogoService service;
 
     @GetMapping("/lista")
-    public ResponseEntity<Page<JogoListarDTO>> listar (Pageable pageable) {
+    public ResponseEntity<Page<JogoListarDTO>> listar(Pageable pageable) {
         return ResponseEntity.ok(service.listar(pageable));
     }
 
