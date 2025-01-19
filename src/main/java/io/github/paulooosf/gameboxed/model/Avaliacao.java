@@ -1,5 +1,6 @@
 package io.github.paulooosf.gameboxed.model;
 
+import io.github.paulooosf.gameboxed.dto.AvaliacaoEntradaDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -34,6 +35,11 @@ public class Avaliacao {
         this.nota = nota;
         this.usuario = usuario;
         this.jogo = jogo;
+    }
+
+    public Avaliacao(AvaliacaoEntradaDTO avaliacao) {
+        this.comentario = avaliacao.comentario();
+        this.nota = avaliacao.nota();
     }
 
     public Long getId() {
