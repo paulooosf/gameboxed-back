@@ -17,8 +17,12 @@ import java.net.URI;
 @RequestMapping("/avaliacoes")
 public class AvaliacaoController {
 
+    private final AvaliacaoService service;
+
     @Autowired
-    private AvaliacaoService service;
+    public AvaliacaoController(AvaliacaoService service) {
+        this.service = service;
+    }
 
     @GetMapping("/lista")
     public ResponseEntity<Page<AvaliacaoSaidaDTO>> listar(Pageable pageable) {

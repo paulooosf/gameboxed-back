@@ -3,7 +3,6 @@ package io.github.paulooosf.gameboxed.controller;
 import io.github.paulooosf.gameboxed.dto.JogoEntradaDTO;
 import io.github.paulooosf.gameboxed.dto.JogoListarDTO;
 import io.github.paulooosf.gameboxed.dto.JogoSaidaDTO;
-import io.github.paulooosf.gameboxed.model.Jogo;
 import io.github.paulooosf.gameboxed.service.JogoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +18,12 @@ import java.net.URI;
 @RequestMapping("/jogos")
 public class JogoController {
 
+    private final JogoService service;
+
     @Autowired
-    private JogoService service;
+    public JogoController(JogoService service) {
+        this.service = service;
+    }
 
     @GetMapping("/lista")
     public ResponseEntity<Page<JogoListarDTO>> listar(Pageable pageable) {
