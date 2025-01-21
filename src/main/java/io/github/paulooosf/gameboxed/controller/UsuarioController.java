@@ -29,7 +29,7 @@ public class UsuarioController {
         return ResponseEntity.ok(service.listar(pageable));
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<UsuarioSaidaDTO> buscar(@PathVariable Long id) {
         return ResponseEntity.ok(service.buscar(id));
     }
