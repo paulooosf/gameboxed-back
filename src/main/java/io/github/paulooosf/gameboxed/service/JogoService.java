@@ -16,8 +16,12 @@ import java.util.Optional;
 @Service
 public class JogoService {
 
+    private final JogoRepository repository;
+
     @Autowired
-    private JogoRepository repository;
+    public JogoService(JogoRepository repository) {
+        this.repository = repository;
+    }
 
     public Page<JogoListarDTO> listar(Pageable pageable) {
         Page<Jogo> jogos = repository.findAll(pageable);

@@ -1,6 +1,5 @@
 package io.github.paulooosf.gameboxed.service;
 
-import io.github.paulooosf.gameboxed.dto.JogoSaidaDTO;
 import io.github.paulooosf.gameboxed.dto.UsuarioEntradaDTO;
 import io.github.paulooosf.gameboxed.dto.UsuarioSaidaDTO;
 import io.github.paulooosf.gameboxed.model.Usuario;
@@ -16,8 +15,12 @@ import java.util.Optional;
 @Service
 public class UsuarioService {
 
+    private final UsuarioRepository repository;
+
     @Autowired
-    private UsuarioRepository repository;
+    public UsuarioService(UsuarioRepository repository) {
+        this.repository = repository;
+    }
 
     public Page<UsuarioSaidaDTO> listar(Pageable pageable) {
         Page<Usuario> usuarios = repository.findAll(pageable);
