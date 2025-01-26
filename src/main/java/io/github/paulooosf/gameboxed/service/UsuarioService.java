@@ -2,12 +2,14 @@ package io.github.paulooosf.gameboxed.service;
 
 import io.github.paulooosf.gameboxed.dto.UsuarioEntradaDTO;
 import io.github.paulooosf.gameboxed.dto.UsuarioSaidaDTO;
+import io.github.paulooosf.gameboxed.exception.UsuarioJaExisteException;
 import io.github.paulooosf.gameboxed.model.Usuario;
 import io.github.paulooosf.gameboxed.repository.UsuarioRepository;
 import io.github.paulooosf.gameboxed.validation.ValidarUsuarioExistente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -34,7 +36,13 @@ public class UsuarioService {
     }
 
     public UsuarioSaidaDTO cadastrar(UsuarioEntradaDTO usuarioDTO) {
-        Usuario usuario = repository.save(usuarioDTO.converter());
+        if (repository.existsByApelido(usuarioDTO.apelido())) {
+            throw new UsuarioJaExisteException("O apelido já foi escolhido por outro usuário!");
+        }
+
+        String senhaCriptografada = new BCryptPasswordEncoder().encode(usuarioDTO.senha());
+        var usuario = new Usuario(usuarioDTO.apelido(), usuarioDTO.email(), senhaCriptografada);
+        repository.save(usuario);
         return new UsuarioSaidaDTO(usuario);
     }
 
