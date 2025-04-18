@@ -23,7 +23,7 @@ Certifique-se de ter o [Docker](https://docs.docker.com/get-started/get-docker/)
 1. Clone o repositório;
 2. No terminal da pasta raiz do projeto, crie a imagem do back-end:
 ```
-docker build -t gameboxed-backend .
+docker build -t gameboxed-back:1.0 .
 ```
 4. Suba os containers:
 ```
