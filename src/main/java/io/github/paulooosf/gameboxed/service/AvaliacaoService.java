@@ -21,14 +21,19 @@ import java.util.Optional;
 @Service
 public class AvaliacaoService {
 
-    @Autowired
-    private AvaliacaoRepository repository;
+    private final AvaliacaoRepository repository;
+
+    private final UsuarioRepository usuarioRepository;
+
+    private final JogoRepository jogoRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private JogoRepository jogoRepository;
+    public AvaliacaoService(AvaliacaoRepository repository, UsuarioRepository usuarioRepository,
+                            JogoRepository jogoRepository) {
+        this.repository = repository;
+        this.usuarioRepository = usuarioRepository;
+        this.jogoRepository = jogoRepository;
+    }
 
     public Page<AvaliacaoSaidaDTO> listar(Pageable pageable) {
         Page<Avaliacao> avaliacoes = repository.findAll(pageable);

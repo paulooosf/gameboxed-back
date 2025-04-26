@@ -11,8 +11,8 @@ import java.util.Optional;
 @Component
 public class ValidarUsuarioExistente {
 
-    @Autowired
-    private UsuarioRepository repository;
+    private ValidarUsuarioExistente() {
+    }
 
     public static void validar(Optional<Usuario> usuarioOpt) {
         if (usuarioOpt.isEmpty()) {
