@@ -1,5 +1,6 @@
 package io.github.paulooosf.gameboxed.service;
 
+import io.github.paulooosf.gameboxed.exception.EmailException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -89,7 +90,7 @@ public class EmailService {
             helper.setText(email.toString(), true);
             mailSender.send(mensagemCadastro);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Erro ao enviar e-mail de cadastro: " + e.getLocalizedMessage());
         }
     }
 
@@ -164,7 +165,7 @@ public class EmailService {
             helper.setText(email.toString(), true);
             mailSender.send(mensagemSenha);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new EmailException("Erro ao enviar email de redefinição de senha: " + e.getMessage());
         }
     }
 }

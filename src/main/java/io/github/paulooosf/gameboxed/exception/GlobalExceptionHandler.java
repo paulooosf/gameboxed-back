@@ -21,6 +21,11 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.BAD_REQUEST, "Token inválido", ex.getMessage());
     }
 
+    @ExceptionHandler(EmailException.class)
+    public ResponseEntity<?> handleEmail(EmailException ex) {
+        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao enviar e-mail", ex.getMessage());
+    }
+
     @ExceptionHandler(NaoEncontradoException.class)
     public ResponseEntity<?> handleNaoEncontrado(NaoEncontradoException ex) {
         return buildResponse(HttpStatus.NOT_FOUND, "Recurso não encontrado", ex.getMessage());
