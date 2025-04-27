@@ -16,6 +16,11 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao gerar token", ex.getMessage());
     }
 
+    @ExceptionHandler(TokenInvalidoException.class)
+    public ResponseEntity<?> handleTokenInvalido(TokenInvalidoException ex) {
+        return buildResponse(HttpStatus.BAD_REQUEST, "Token inválido", ex.getMessage());
+    }
+
     @ExceptionHandler(NaoEncontradoException.class)
     public ResponseEntity<?> handleNaoEncontrado(NaoEncontradoException ex) {
         return buildResponse(HttpStatus.NOT_FOUND, "Recurso não encontrado", ex.getMessage());
