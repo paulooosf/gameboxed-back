@@ -34,6 +34,8 @@ public class ConfigSeguranca {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/autenticar/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/autenticar/esqueci-senha").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/autenticar/redefinir-senha").permitAll()
                         .requestMatchers(HttpMethod.GET, "/jogos/lista").permitAll()
                         .requestMatchers(HttpMethod.GET, "/jogos/{id}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/jogos").hasRole("ADMIN")
