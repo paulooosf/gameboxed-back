@@ -6,6 +6,7 @@ import io.github.paulooosf.gameboxed.exception.UsuarioJaExisteException;
 import io.github.paulooosf.gameboxed.model.Usuario;
 import io.github.paulooosf.gameboxed.repository.UsuarioRepository;
 import io.github.paulooosf.gameboxed.validation.ValidarUsuarioExistente;
+import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,9 +20,12 @@ public class UsuarioService {
 
     private final UsuarioRepository repository;
 
+    private final EmailService emailService;
+
     @Autowired
-    public UsuarioService(UsuarioRepository repository) {
+    public UsuarioService(UsuarioRepository repository, EmailService emailService) {
         this.repository = repository;
+        this.emailService = emailService;
     }
 
     public Page<UsuarioSaidaDTO> listar(Pageable pageable) {
@@ -40,9 +44,14 @@ public class UsuarioService {
             throw new UsuarioJaExisteException("O apelido já foi escolhido por outro usuário!");
         }
 
+        if (repository.existsByEmail(usuarioDTO.email())) {
+            throw new UsuarioJaExisteException("O e-mail escolhido já está sendo utilizado!");
+        }
+
         String senhaCriptografada = new BCryptPasswordEncoder().encode(usuarioDTO.senha());
         var usuario = new Usuario(usuarioDTO.apelido(), usuarioDTO.email(), senhaCriptografada);
         repository.save(usuario);
+        emailService.enviarEmailCadastro(usuarioDTO.email(), usuarioDTO.apelido());
         return new UsuarioSaidaDTO(usuario);
     }
 
