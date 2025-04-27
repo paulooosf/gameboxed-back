@@ -6,7 +6,6 @@ import io.github.paulooosf.gameboxed.exception.UsuarioJaExisteException;
 import io.github.paulooosf.gameboxed.model.Usuario;
 import io.github.paulooosf.gameboxed.repository.UsuarioRepository;
 import io.github.paulooosf.gameboxed.validation.ValidarUsuarioExistente;
-import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
