@@ -42,13 +42,13 @@ public class JogoController {
         return ResponseEntity.created(uri).body(jogoDTO);
     }
 
-    @PutMapping("/editar/{id}")
-    public ResponseEntity<JogoSaidaDTO> editar(@PathVariable Long id, @Valid @RequestBody JogoEntradaDTO jogo) {
+    @PutMapping(value = "/editar", params = "id")
+    public ResponseEntity<JogoSaidaDTO> editar(@RequestParam Long id, @Valid @RequestBody JogoEntradaDTO jogo) {
         return ResponseEntity.ok(service.editar(id, jogo.converter()));
     }
 
-    @DeleteMapping("/deletar/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+    @DeleteMapping(value = "/deletar", params = "id")
+    public ResponseEntity<Void> deletar(@RequestParam Long id) {
         service.deletar(id);
         return ResponseEntity.noContent().build();
     }

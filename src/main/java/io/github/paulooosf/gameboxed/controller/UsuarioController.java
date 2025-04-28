@@ -41,13 +41,13 @@ public class UsuarioController {
         return ResponseEntity.created(uri).body(usuarioDTO);
     }
 
-    @PutMapping("/editar/{id}")
-    public ResponseEntity<UsuarioSaidaDTO> editar(@PathVariable Long id, @Valid @RequestBody UsuarioEntradaDTO usuario) {
+    @PutMapping(value = "/editar", params = "id")
+    public ResponseEntity<UsuarioSaidaDTO> editar(@RequestParam Long id, @Valid @RequestBody UsuarioEntradaDTO usuario) {
         return ResponseEntity.ok(service.editar(id, usuario.converter()));
     }
 
-    @DeleteMapping("/deletar/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+    @DeleteMapping(value = "/deletar", params = "id")
+    public ResponseEntity<Void> deletar(@RequestParam Long id) {
         service.deletar(id);
         return ResponseEntity.noContent().build();
     }

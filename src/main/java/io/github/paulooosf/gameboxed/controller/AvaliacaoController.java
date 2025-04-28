@@ -42,14 +42,14 @@ public class AvaliacaoController {
         return ResponseEntity.created(uri).body(avaliacaoDTO);
     }
 
-    @PutMapping("/editar/{id}")
-    public ResponseEntity<AvaliacaoSaidaDTO> editar(@PathVariable Long id,
+    @PutMapping(value = "/editar", params = "id")
+    public ResponseEntity<AvaliacaoSaidaDTO> editar(@RequestParam Long id,
                                                     @Valid @RequestBody AvaliacaoEntradaDTO avaliacao) {
         return ResponseEntity.ok(service.editar(id, avaliacao.converter()));
     }
 
-    @DeleteMapping("/deletar/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+    @DeleteMapping(value = "/deletar", params = "id")
+    public ResponseEntity<Void> deletar(@RequestParam Long id) {
         service.deletar(id);
         return ResponseEntity.noContent().build();
     }
