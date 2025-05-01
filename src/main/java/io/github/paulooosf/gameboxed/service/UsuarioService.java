@@ -56,7 +56,9 @@ public class UsuarioService {
 
     public UsuarioSaidaDTO editar(Long id, Usuario usuario) {
         ValidarUsuarioExistente.validar(repository.findById(id));
+        String senhaCriptografada = new BCryptPasswordEncoder().encode(usuario.getSenha());
         usuario.setId(id);
+        usuario.setSenha(senhaCriptografada);
         return new UsuarioSaidaDTO(repository.save(usuario));
     }
 
