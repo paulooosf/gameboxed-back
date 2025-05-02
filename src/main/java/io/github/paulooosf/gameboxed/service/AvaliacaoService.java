@@ -46,8 +46,8 @@ public class AvaliacaoService {
         return new AvaliacaoSaidaDTO(avaliacaoOpt.get());
     }
 
-    public AvaliacaoSaidaDTO avaliar(AvaliacaoEntradaDTO avaliacaoDTO) {
-        var usuarioOpt = usuarioRepository.findById(avaliacaoDTO.idUsuario());
+    public AvaliacaoSaidaDTO avaliar(AvaliacaoEntradaDTO avaliacaoDTO, Long idUsuario) {
+        var usuarioOpt = usuarioRepository.findById(idUsuario);
         ValidarUsuarioExistente.validar(usuarioOpt);
         Usuario usuario = usuarioOpt.get();
 
@@ -64,8 +64,13 @@ public class AvaliacaoService {
         return new AvaliacaoSaidaDTO(repository.save(avaliacao));
     }
 
-    public AvaliacaoSaidaDTO editar(Long id, Avaliacao avaliacao) {
-        ValidarAvaliacaoExistente.validar(repository.findById(id));
+    public AvaliacaoSaidaDTO editar(Long id, AvaliacaoEntradaDTO avaliacaoDTO, Usuario usuario) {
+        var avaliacaoOpt = repository.findById(id);
+        ValidarAvaliacaoExistente.validar(avaliacaoOpt);
+
+        Avaliacao avaliacao = avaliacaoDTO.converter();
+        avaliacao.setJogo(avaliacaoOpt.get().getJogo());
+        avaliacao.setUsuario(usuario);
         avaliacao.setId(id);
         return new AvaliacaoSaidaDTO(repository.save(avaliacao));
     }

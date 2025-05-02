@@ -2,12 +2,14 @@ package io.github.paulooosf.gameboxed.controller;
 
 import io.github.paulooosf.gameboxed.dto.AvaliacaoEntradaDTO;
 import io.github.paulooosf.gameboxed.dto.AvaliacaoSaidaDTO;
+import io.github.paulooosf.gameboxed.model.Usuario;
 import io.github.paulooosf.gameboxed.service.AvaliacaoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -35,8 +37,9 @@ public class AvaliacaoController {
     }
 
     @PostMapping
-    public ResponseEntity<AvaliacaoSaidaDTO> avaliar(@Valid @RequestBody AvaliacaoEntradaDTO avaliacao) {
-        AvaliacaoSaidaDTO avaliacaoDTO = service.avaliar(avaliacao);
+    public ResponseEntity<AvaliacaoSaidaDTO> avaliar(@Valid @RequestBody AvaliacaoEntradaDTO avaliacao,
+                                                    @AuthenticationPrincipal Usuario usuario) {
+        AvaliacaoSaidaDTO avaliacaoDTO = service.avaliar(avaliacao, usuario.getId());
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(avaliacaoDTO.id()).toUri();
         return ResponseEntity.created(uri).body(avaliacaoDTO);
@@ -44,8 +47,9 @@ public class AvaliacaoController {
 
     @PutMapping(value = "/editar", params = "id")
     public ResponseEntity<AvaliacaoSaidaDTO> editar(@RequestParam Long id,
-                                                    @Valid @RequestBody AvaliacaoEntradaDTO avaliacao) {
-        return ResponseEntity.ok(service.editar(id, avaliacao.converter()));
+                                                    @Valid @RequestBody AvaliacaoEntradaDTO avaliacao,
+                                                    @AuthenticationPrincipal Usuario usuario) {
+        return ResponseEntity.ok(service.editar(id, avaliacao, usuario));
     }
 
     @DeleteMapping(value = "/deletar", params = "id")
