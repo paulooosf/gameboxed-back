@@ -178,6 +178,6 @@ public class Jogo {
     }
 
     public JogoListarDTO toDto() {
-        return new JogoListarDTO(this.id, this.nome, this.nota, this.linkCapa);
+        return new JogoListarDTO(this.id, this.nome, this.ano, this.nota, this.linkCapa);
     }
 }
