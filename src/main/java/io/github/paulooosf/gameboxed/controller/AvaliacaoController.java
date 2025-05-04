@@ -53,8 +53,8 @@ public class AvaliacaoController {
     }
 
     @DeleteMapping(value = "/deletar", params = "id")
-    public ResponseEntity<Void> deletar(@RequestParam Long id) {
-        service.deletar(id);
+    public ResponseEntity<Void> deletar(@RequestParam Long id, @AuthenticationPrincipal Usuario usuario) {
+        service.deletar(id, usuario);
         return ResponseEntity.noContent().build();
     }
 }

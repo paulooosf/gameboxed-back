@@ -1,7 +1,9 @@
 package io.github.paulooosf.gameboxed.service;
 
+import io.github.paulooosf.gameboxed.Enum.Role;
 import io.github.paulooosf.gameboxed.dto.AvaliacaoEntradaDTO;
 import io.github.paulooosf.gameboxed.dto.AvaliacaoSaidaDTO;
+import io.github.paulooosf.gameboxed.exception.SemPermissaoException;
 import io.github.paulooosf.gameboxed.model.Avaliacao;
 import io.github.paulooosf.gameboxed.model.Jogo;
 import io.github.paulooosf.gameboxed.model.Usuario;
@@ -68,6 +70,12 @@ public class AvaliacaoService {
         var avaliacaoOpt = repository.findById(id);
         ValidarAvaliacaoExistente.validar(avaliacaoOpt);
 
+        boolean ehDono = avaliacaoOpt.get().getUsuario().getApelido().equals(usuario.getApelido());
+        boolean ehAdmin = usuario.getRole() == Role.ADMIN;
+        if (!ehDono && !ehAdmin) {
+            throw new SemPermissaoException("Você não tem permissão para fazer isso.");
+        }
+
         Avaliacao avaliacao = avaliacaoDTO.converter();
         avaliacao.setJogo(avaliacaoOpt.get().getJogo());
         avaliacao.setUsuario(usuario);
@@ -75,8 +83,16 @@ public class AvaliacaoService {
         return new AvaliacaoSaidaDTO(repository.save(avaliacao));
     }
 
-    public void deletar(Long id) {
-        ValidarAvaliacaoExistente.validar(repository.findById(id));
+    public void deletar(Long id, Usuario usuario) {
+        var avaliacaoOpt = repository.findById(id);
+        ValidarAvaliacaoExistente.validar(avaliacaoOpt);
+
+        boolean ehDono = avaliacaoOpt.get().getUsuario().getApelido().equals(usuario.getApelido());
+        boolean ehAdmin = usuario.getRole() == Role.ADMIN;
+        if (!ehDono && !ehAdmin) {
+            throw new SemPermissaoException("Você não tem permissão para fazer isso.");
+        }
+
         repository.deleteById(id);
     }
 }

@@ -38,6 +38,11 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.CONFLICT, "Usuário já existe", ex.getMessage());
     }
 
+    @ExceptionHandler(SemPermissaoException.class)
+    public ResponseEntity<?> handleSemPermissao(SemPermissaoException ex) {
+        return buildResponse(HttpStatus.FORBIDDEN, "Sem permissão", ex.getMessage());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
         String mensagens = ex.getBindingResult().getFieldErrors().stream()
