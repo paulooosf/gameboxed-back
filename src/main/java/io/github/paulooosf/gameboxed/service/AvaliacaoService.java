@@ -76,6 +76,12 @@ public class AvaliacaoService {
             throw new SemPermissaoException("Você não tem permissão para fazer isso.");
         }
 
+        var jogoOpt = jogoRepository.findById(avaliacaoDTO.idJogo());
+        ValidarJogoExistente.validar(jogoOpt);
+        Jogo jogo = jogoOpt.get();
+        jogo.editarNota(avaliacaoOpt.get().getNota(), avaliacaoDTO.nota());
+        jogoRepository.save(jogo);
+
         Avaliacao avaliacao = avaliacaoDTO.converter();
         avaliacao.setJogo(avaliacaoOpt.get().getJogo());
         avaliacao.setUsuario(usuario);
@@ -92,6 +98,10 @@ public class AvaliacaoService {
         if (!ehDono && !ehAdmin) {
             throw new SemPermissaoException("Você não tem permissão para fazer isso.");
         }
+
+        Jogo jogo = avaliacaoOpt.get().getJogo();
+        jogo.removerNota(avaliacaoOpt.get().getNota());
+        jogoRepository.save(jogo);
 
         repository.deleteById(id);
     }
