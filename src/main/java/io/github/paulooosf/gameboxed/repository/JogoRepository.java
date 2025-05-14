@@ -11,5 +11,7 @@ public interface JogoRepository extends JpaRepository<Jogo, Long> {
 
     public Page<Jogo> findAll(Pageable pageable);
 
+    public Page<Jogo> findByNomeContainingIgnoreCase(String titulo, Pageable pageable);
+
     public Optional<Jogo> findById(Long id);
 }

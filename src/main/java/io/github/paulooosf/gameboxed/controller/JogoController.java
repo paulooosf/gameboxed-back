@@ -26,8 +26,8 @@ public class JogoController {
     }
 
     @GetMapping("/lista")
-    public ResponseEntity<Page<JogoListarDTO>> listar(Pageable pageable) {
-        return ResponseEntity.ok(service.listar(pageable));
+    public ResponseEntity<Page<JogoListarDTO>> listar(@RequestParam(required = false) String busca, Pageable pageable) {
+        return ResponseEntity.ok(service.listar(busca, pageable));
     }
 
     @GetMapping("/{id}")
