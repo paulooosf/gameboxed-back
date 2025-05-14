@@ -15,32 +15,32 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(GeracaoTokenException.class)
     public ResponseEntity<?> handleGeracaoToken(GeracaoTokenException ex) {
-        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao gerar token", ex.getMessage());
+        return construirResposta(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao gerar token", ex.getMessage());
     }
 
     @ExceptionHandler(TokenInvalidoException.class)
     public ResponseEntity<?> handleTokenInvalido(TokenInvalidoException ex) {
-        return buildResponse(HttpStatus.BAD_REQUEST, "Token inválido", ex.getMessage());
+        return construirResposta(HttpStatus.BAD_REQUEST, "Token inválido", ex.getMessage());
     }
 
     @ExceptionHandler(EmailException.class)
     public ResponseEntity<?> handleEmail(EmailException ex) {
-        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao enviar e-mail", ex.getMessage());
+        return construirResposta(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao enviar e-mail", ex.getMessage());
     }
 
     @ExceptionHandler(NaoEncontradoException.class)
     public ResponseEntity<?> handleNaoEncontrado(NaoEncontradoException ex) {
-        return buildResponse(HttpStatus.NOT_FOUND, "Recurso não encontrado", ex.getMessage());
+        return construirResposta(HttpStatus.NOT_FOUND, "Recurso não encontrado", ex.getMessage());
     }
 
     @ExceptionHandler(UsuarioJaExisteException.class)
     public ResponseEntity<?> handleUsuarioJaExiste(UsuarioJaExisteException ex) {
-        return buildResponse(HttpStatus.CONFLICT, "Usuário já existe", ex.getMessage());
+        return construirResposta(HttpStatus.CONFLICT, "Usuário já existe", ex.getMessage());
     }
 
     @ExceptionHandler(SemPermissaoException.class)
     public ResponseEntity<?> handleSemPermissao(SemPermissaoException ex) {
-        return buildResponse(HttpStatus.FORBIDDEN, "Sem permissão", ex.getMessage());
+        return construirResposta(HttpStatus.FORBIDDEN, "Sem permissão", ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -49,15 +49,15 @@ public class GlobalExceptionHandler {
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .collect(Collectors.joining("; "));
 
-        return buildResponse(HttpStatus.BAD_REQUEST, "Argumentos inválidos", mensagens);
+        return construirResposta(HttpStatus.BAD_REQUEST, "Argumentos inválidos", mensagens);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleExcecaoGenerica(Exception ex) {
-        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Erro inesperado", ex.getMessage());
+        return construirResposta(HttpStatus.INTERNAL_SERVER_ERROR, "Erro inesperado", ex.getMessage());
     }
 
-    private ResponseEntity<Map<String, Object>> buildResponse(HttpStatus status, String error, String message) {
+    private ResponseEntity<Map<String, Object>> construirResposta(HttpStatus status, String error, String message) {
         Map<String, Object> body = new HashMap<>();
         body.put("Status", status.value());
         body.put("Erro", error);
