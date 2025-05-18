@@ -33,6 +33,7 @@ public class ConfigSeguranca {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/v3/api-docs/**","/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers(HttpMethod.POST, "/autenticar/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/autenticar/esqueci-senha").permitAll()
                         .requestMatchers(HttpMethod.POST, "/autenticar/redefinir-senha").permitAll()
