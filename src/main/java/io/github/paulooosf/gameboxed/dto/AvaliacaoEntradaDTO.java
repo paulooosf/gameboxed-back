@@ -6,12 +6,10 @@ import jakarta.validation.constraints.NotNull;
 
 public record AvaliacaoEntradaDTO (@NotBlank(message = "Preencha o comentário!") String comentario,
                                    @NotNull(message = "Preencha a nota!") Double nota,
-                                   @NotNull(message = "Preencha o id do usuário!") Long idUsuario,
                                    @NotNull(message = "Preencha o id do jogo!") Long idJogo
                                     ){
     public AvaliacaoEntradaDTO(Avaliacao avaliacao) {
-        this(avaliacao.getComentario(), avaliacao.getNota(), avaliacao.getUsuario().getId(),
-                avaliacao.getJogo().getId());
+        this(avaliacao.getComentario(), avaliacao.getNota(), avaliacao.getJogo().getId());
     }
 
     public Avaliacao converter() {

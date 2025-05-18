@@ -18,7 +18,7 @@ public class Avaliacao {
     @Column(name = "ava_dp_nota", nullable = false)
     private Double nota;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ava_fk_usu", nullable = false)
     private Usuario usuario;
 

@@ -1,7 +1,9 @@
 package io.github.paulooosf.gameboxed.service;
 
+import io.github.paulooosf.gameboxed.Enum.Role;
 import io.github.paulooosf.gameboxed.dto.AvaliacaoEntradaDTO;
 import io.github.paulooosf.gameboxed.dto.AvaliacaoSaidaDTO;
+import io.github.paulooosf.gameboxed.exception.SemPermissaoException;
 import io.github.paulooosf.gameboxed.model.Avaliacao;
 import io.github.paulooosf.gameboxed.model.Jogo;
 import io.github.paulooosf.gameboxed.model.Usuario;
@@ -46,8 +48,8 @@ public class AvaliacaoService {
         return new AvaliacaoSaidaDTO(avaliacaoOpt.get());
     }
 
-    public AvaliacaoSaidaDTO avaliar(AvaliacaoEntradaDTO avaliacaoDTO) {
-        var usuarioOpt = usuarioRepository.findById(avaliacaoDTO.idUsuario());
+    public AvaliacaoSaidaDTO avaliar(AvaliacaoEntradaDTO avaliacaoDTO, Long idUsuario) {
+        var usuarioOpt = usuarioRepository.findById(idUsuario);
         ValidarUsuarioExistente.validar(usuarioOpt);
         Usuario usuario = usuarioOpt.get();
 
@@ -64,14 +66,43 @@ public class AvaliacaoService {
         return new AvaliacaoSaidaDTO(repository.save(avaliacao));
     }
 
-    public AvaliacaoSaidaDTO editar(Long id, Avaliacao avaliacao) {
-        ValidarAvaliacaoExistente.validar(repository.findById(id));
+    public AvaliacaoSaidaDTO editar(Long id, AvaliacaoEntradaDTO avaliacaoDTO, Usuario usuario) {
+        var avaliacaoOpt = repository.findById(id);
+        ValidarAvaliacaoExistente.validar(avaliacaoOpt);
+
+        boolean ehDono = avaliacaoOpt.get().getUsuario().getApelido().equals(usuario.getApelido());
+        boolean ehAdmin = usuario.getRole() == Role.ADMIN;
+        if (!ehDono && !ehAdmin) {
+            throw new SemPermissaoException("Você não tem permissão para fazer isso.");
+        }
+
+        var jogoOpt = jogoRepository.findById(avaliacaoDTO.idJogo());
+        ValidarJogoExistente.validar(jogoOpt);
+        Jogo jogo = jogoOpt.get();
+        jogo.editarNota(avaliacaoOpt.get().getNota(), avaliacaoDTO.nota());
+        jogoRepository.save(jogo);
+
+        Avaliacao avaliacao = avaliacaoDTO.converter();
+        avaliacao.setJogo(avaliacaoOpt.get().getJogo());
+        avaliacao.setUsuario(usuario);
         avaliacao.setId(id);
         return new AvaliacaoSaidaDTO(repository.save(avaliacao));
     }
 
-    public void deletar(Long id) {
-        ValidarAvaliacaoExistente.validar(repository.findById(id));
+    public void deletar(Long id, Usuario usuario) {
+        var avaliacaoOpt = repository.findById(id);
+        ValidarAvaliacaoExistente.validar(avaliacaoOpt);
+
+        boolean ehDono = avaliacaoOpt.get().getUsuario().getApelido().equals(usuario.getApelido());
+        boolean ehAdmin = usuario.getRole() == Role.ADMIN;
+        if (!ehDono && !ehAdmin) {
+            throw new SemPermissaoException("Você não tem permissão para fazer isso.");
+        }
+
+        Jogo jogo = avaliacaoOpt.get().getJogo();
+        jogo.removerNota(avaliacaoOpt.get().getNota());
+        jogoRepository.save(jogo);
+
         repository.deleteById(id);
     }
 }

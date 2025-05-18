@@ -23,8 +23,13 @@ public class JogoService {
         this.repository = repository;
     }
 
-    public Page<JogoListarDTO> listar(Pageable pageable) {
-        Page<Jogo> jogos = repository.findAll(pageable);
+    public Page<JogoListarDTO> listar(String busca, Pageable pageable) {
+        Page<Jogo> jogos;
+        if (busca != null && !busca.isBlank()) {
+            jogos = repository.findByNomeContainingIgnoreCase(busca, pageable);
+        } else {
+            jogos = repository.findAll(pageable);
+        }
         return jogos.map(JogoListarDTO::new);
     }
 

@@ -177,7 +177,22 @@ public class Jogo {
         this.quantidadeAvaliacoes++;
     }
 
+    public void editarNota(Double notaAntiga, Double notaNova) {
+        this.nota = (this.nota * this.quantidadeAvaliacoes - notaAntiga + notaNova) / this.quantidadeAvaliacoes;
+    }
+
+    public void removerNota(Double nota) {
+        if (this.quantidadeAvaliacoes <= 1) {
+            this.nota = 0.0;
+            this.quantidadeAvaliacoes = 0;
+            return;
+        }
+
+        this.nota = (this.nota * this.quantidadeAvaliacoes - nota) / (this.quantidadeAvaliacoes - 1);
+        this.quantidadeAvaliacoes--;
+    }
+
     public JogoListarDTO toDto() {
-        return new JogoListarDTO(this.id, this.nome, this.nota, this.linkCapa);
+        return new JogoListarDTO(this.id, this.nome, this.ano, this.nota, this.linkCapa);
     }
 }

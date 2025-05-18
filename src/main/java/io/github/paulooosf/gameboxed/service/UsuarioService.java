@@ -19,9 +19,12 @@ public class UsuarioService {
 
     private final UsuarioRepository repository;
 
+    private final EmailService emailService;
+
     @Autowired
-    public UsuarioService(UsuarioRepository repository) {
+    public UsuarioService(UsuarioRepository repository, EmailService emailService) {
         this.repository = repository;
+        this.emailService = emailService;
     }
 
     public Page<UsuarioSaidaDTO> listar(Pageable pageable) {
@@ -40,15 +43,22 @@ public class UsuarioService {
             throw new UsuarioJaExisteException("O apelido já foi escolhido por outro usuário!");
         }
 
+        if (repository.existsByEmail(usuarioDTO.email())) {
+            throw new UsuarioJaExisteException("O e-mail escolhido já está sendo utilizado!");
+        }
+
         String senhaCriptografada = new BCryptPasswordEncoder().encode(usuarioDTO.senha());
         var usuario = new Usuario(usuarioDTO.apelido(), usuarioDTO.email(), senhaCriptografada);
         repository.save(usuario);
+        emailService.enviarEmailCadastro(usuarioDTO.email(), usuarioDTO.apelido());
         return new UsuarioSaidaDTO(usuario);
     }
 
     public UsuarioSaidaDTO editar(Long id, Usuario usuario) {
         ValidarUsuarioExistente.validar(repository.findById(id));
+        String senhaCriptografada = new BCryptPasswordEncoder().encode(usuario.getSenha());
         usuario.setId(id);
+        usuario.setSenha(senhaCriptografada);
         return new UsuarioSaidaDTO(repository.save(usuario));
     }
 
