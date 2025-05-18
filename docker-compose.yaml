@@ -1,4 +1,10 @@
 services:
+  gameboxed-front:
+    image: gameboxed-front:1.0
+    ports:
+      - "3000:80"
+    depends_on:
+      - gameboxed-back
   gameboxed-back:
     image: gameboxed-back:1.0
     ports:
@@ -11,3 +17,5 @@ services:
       POSTGRES_USER: gameboxed-back
       POSTGRES_PASSWORD: gameboxed-back
       POSTGRES_DB: gameboxed
+    ports:
+      - "5432:5432"
