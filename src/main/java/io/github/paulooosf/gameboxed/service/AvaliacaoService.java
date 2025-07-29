@@ -14,6 +14,8 @@ import io.github.paulooosf.gameboxed.validation.ValidarAvaliacaoExistente;
 import io.github.paulooosf.gameboxed.validation.ValidarJogoExistente;
 import io.github.paulooosf.gameboxed.validation.ValidarUsuarioExistente;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,12 +31,15 @@ public class AvaliacaoService {
 
     private final JogoRepository jogoRepository;
 
+    private final CacheManager cacheManager;
+
     @Autowired
     public AvaliacaoService(AvaliacaoRepository repository, UsuarioRepository usuarioRepository,
-                            JogoRepository jogoRepository) {
+                            JogoRepository jogoRepository, CacheManager cacheManager) {
         this.repository = repository;
         this.usuarioRepository = usuarioRepository;
         this.jogoRepository = jogoRepository;
+        this.cacheManager = cacheManager;
     }
 
     public Page<AvaliacaoSaidaDTO> listar(Pageable pageable) {
@@ -48,6 +53,7 @@ public class AvaliacaoService {
         return new AvaliacaoSaidaDTO(avaliacaoOpt.get());
     }
 
+    @CacheEvict(value = "jogo", key = "#avaliacaoDTO.idJogo")
     public AvaliacaoSaidaDTO avaliar(AvaliacaoEntradaDTO avaliacaoDTO, Long idUsuario) {
         var usuarioOpt = usuarioRepository.findById(idUsuario);
         ValidarUsuarioExistente.validar(usuarioOpt);
@@ -66,6 +72,7 @@ public class AvaliacaoService {
         return new AvaliacaoSaidaDTO(repository.save(avaliacao));
     }
 
+    @CacheEvict(value = "jogo", key = "#avaliacaoDTO.idJogo")
     public AvaliacaoSaidaDTO editar(Long id, AvaliacaoEntradaDTO avaliacaoDTO, Usuario usuario) {
         var avaliacaoOpt = repository.findById(id);
         ValidarAvaliacaoExistente.validar(avaliacaoOpt);
@@ -104,5 +111,8 @@ public class AvaliacaoService {
         jogoRepository.save(jogo);
 
         repository.deleteById(id);
+
+        Long idJogo = avaliacaoOpt.get().getJogo().getId();
+        cacheManager.getCache("jogo").evict(idJogo);
     }
 }
