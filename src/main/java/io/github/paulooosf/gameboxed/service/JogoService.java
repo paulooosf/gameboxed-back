@@ -7,6 +7,7 @@ import io.github.paulooosf.gameboxed.model.Jogo;
 import io.github.paulooosf.gameboxed.repository.JogoRepository;
 import io.github.paulooosf.gameboxed.validation.ValidarJogoExistente;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class JogoService {
         this.repository = repository;
     }
 
+    @Cacheable(value = "jogos")
     public Page<JogoListarDTO> listar(String busca, Pageable pageable) {
         Page<Jogo> jogos;
         if (busca != null && !busca.isBlank()) {
