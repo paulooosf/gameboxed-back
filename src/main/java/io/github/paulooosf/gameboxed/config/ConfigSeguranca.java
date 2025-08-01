@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @EnableWebSecurity
@@ -34,9 +35,8 @@ public class ConfigSeguranca {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/v3/api-docs/**","/swagger-ui/**", "/swagger-ui.html").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/autenticar/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/autenticar/esqueci-senha").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/autenticar/redefinir-senha").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/autenticar/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/autenticar/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/jogos/lista").permitAll()
                         .requestMatchers(HttpMethod.GET, "/jogos/{id}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/jogos").hasRole("ADMIN")
@@ -61,5 +61,10 @@ public class ConfigSeguranca {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 }
