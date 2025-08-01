@@ -2,6 +2,7 @@ package io.github.paulooosf.gameboxed.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,6 +37,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UsuarioJaExisteException.class)
     public ResponseEntity<?> handleUsuarioJaExiste(UsuarioJaExisteException ex) {
         return construirResposta(HttpStatus.CONFLICT, "Usuário já existe", ex.getMessage());
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<?> handleUsernameNotFound(UsernameNotFoundException ex) {
+        return construirResposta(HttpStatus.NOT_FOUND, "Usuário não encontrado", ex.getMessage());
     }
 
     @ExceptionHandler(SemPermissaoException.class)
