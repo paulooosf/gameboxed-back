@@ -25,6 +25,7 @@
 - Atualização dinâmica da nota de um jogo ao avaliar ou editar/deletar uma avaliação;
 - Envio de e-mails ao cadastrar;
 - Redefinição de senha por e-mail utilizando tokens JWT;
+- Login via Google utilizando OAuth 2.0;
 - Conteinerização com Docker.
 ## Documentação
 Todos os endpoints estão documentados via Swagger, portanto, ao rodar o projeto, você pode conferir a documentação
@@ -46,5 +47,8 @@ Após a inicialização, a API estará disponível em http://localhost:8080
 
 _O sistema será inicializado com dois logins disponíveis, com o apelido/senha sendo o mesmo: admin e usuario.
 O sistema também será populado com alguns jogos de início._
+
+_O login via Google OAuth 2.0 é opcional. Para usá-lo, é necessário configurar as variáveis de ambiente `GOOGLE_CLIENT_ID` 
+e `GOOGLE_CLIENT_SECRET`, obtidas via Google Cloud Console. Caso não configuradas, essa funcionalidade apresentará erro._
 ## Créditos
 - Paulo Henrique - [paulooosf](http://github.com/paulooosf)
