@@ -7,6 +7,7 @@
     <img alt="JWT" src="https://img.shields.io/badge/jwt-000000?style=for-the-badge&logo=jsonwebtokens&labelColor=000000">
     <img alt="PostgreSQL" src="https://img.shields.io/badge/POSTGRESQL-%234169E1?style=for-the-badge&logo=POSTGRESQL&logoColor=%234169E1&labelColor=black">
     <img alt="Docker" src="https://img.shields.io/badge/docker-%232496ED?style=for-the-badge&logo=docker&logoColor=%232496ED&labelColor=black">
+    <img alt="Redis" src="https://img.shields.io/badge/redis-%23FF4438?style=for-the-badge&logo=redis&logoColor=%23FF4438&labelColor=black">
 </div>
 <p align="center">
   <a href="#funcionalidades">Funcionalidades</a> •
@@ -26,7 +27,8 @@
 - Envio de e-mails ao cadastrar;
 - Redefinição de senha por e-mail utilizando tokens JWT;
 - Login via Google utilizando OAuth 2.0;
-- Conteinerização com Docker.
+- Conteinerização com Docker;
+- Cache com Redis.
 ## Documentação
 Todos os endpoints estão documentados via Swagger, portanto, ao rodar o projeto, você pode conferir a documentação
 de todos os endpoints acessando [este link](http://localhost:8080/swagger-ui/index.html).
