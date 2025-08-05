@@ -45,15 +45,29 @@ public class LoginGoogleController {
 
     @GetMapping("/autorizado")
     public ResponseEntity<LoginRespostaDTO> autenticarUsuarioOAuth(@RequestParam String code) {
-        String email = loginGoogleService.obterEmail(code);
-        var usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+        String urlRedirecionamento;
 
-        var autenticacao = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(autenticacao);
+        try {
+            String email = loginGoogleService.obterEmail(code);
+            var usuario = usuarioRepository.findByEmail(email)
+                    .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
-        String token = tokenService.gerarToken(usuario);
+            var autenticacao = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(autenticacao);
 
-        return ResponseEntity.ok(new LoginRespostaDTO(token));
+            String token = tokenService.gerarToken(usuario);
+            String apelido = usuario.getApelido();
+
+            urlRedirecionamento = "http://localhost:5173/oauth-sucesso?token=" + token + "&apelido=" + apelido;
+        } catch (UsernameNotFoundException e) {
+            urlRedirecionamento = "http://localhost:5173/login?erro=usuario_nao_encontrado";
+        } catch (Exception e) {
+            urlRedirecionamento = "http://localhost:5173/login?erro=erro_inesperado";
+        }
+
+        var headers = new HttpHeaders();
+        headers.setLocation(URI.create(urlRedirecionamento));
+
+        return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
 }
