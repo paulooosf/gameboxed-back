@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/autenticar/google")
@@ -58,7 +60,9 @@ public class LoginGoogleController {
             String token = tokenService.gerarToken(usuario);
             String apelido = usuario.getApelido();
 
-            urlRedirecionamento = "http://localhost:5173/oauth-sucesso?token=" + token + "&apelido=" + apelido;
+            urlRedirecionamento = "http://localhost:5173/oauth-sucesso?token=" +
+                        URLEncoder.encode(token, StandardCharsets.UTF_8) +
+                        "&apelido=" + URLEncoder.encode(apelido, StandardCharsets.UTF_8);
         } catch (UsernameNotFoundException e) {
             urlRedirecionamento = "http://localhost:5173/login?erro=usuario_nao_encontrado";
         } catch (Exception e) {
