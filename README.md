@@ -8,9 +8,12 @@
     <img alt="PostgreSQL" src="https://img.shields.io/badge/POSTGRESQL-%234169E1?style=for-the-badge&logo=POSTGRESQL&logoColor=%234169E1&labelColor=black">
     <img alt="Docker" src="https://img.shields.io/badge/docker-%232496ED?style=for-the-badge&logo=docker&logoColor=%232496ED&labelColor=black">
     <img alt="Redis" src="https://img.shields.io/badge/redis-%23FF4438?style=for-the-badge&logo=redis&logoColor=%23FF4438&labelColor=black">
+    <img alt="AWS" src="https://img.shields.io/badge/AWS-%23FF9900?style=for-the-badge&logo=amazonwebservices&logoColor=%23FF9900&labelColor=black">
 </div>
+
 <p align="center">
   <a href="#funcionalidades">Funcionalidades</a> •
+  <a href="#infraestrutura">Infraestrutura</a> •
   <a href="#documentacao">Documentação</a> •
   <a href="#como-rodar">Como rodar</a> •
   <a href="#créditos">Créditos</a>
@@ -29,14 +32,36 @@
 - Login via Google utilizando OAuth 2.0;
 - Conteinerização com Docker;
 - Cache com Redis.
+
+## Infraestrutura
+
+O projeto está hospedado na AWS com a seguinte arquitetura:
+
+- **Back-end:** instância EC2 (Ubuntu) na região `sa-east-1`, rodando os containers via Docker Compose.
+- **Banco de dados:** PostgreSQL em container Docker na própria EC2, com volume persistente.
+- **Cache:** Redis em container Docker na própria EC2.
+- **Registro de imagens:** Amazon ECR, utilizado para armazenar e distribuir a imagem Docker do back-end.
+- **Front-end:** hospedado no Amazon S3 com distribuição via CloudFront.
+
+Todas as variáveis sensíveis (credenciais de banco, JWT secret, OAuth, e-mail) são injetadas via variáveis de ambiente em tempo de execução, sem nenhum valor hardcoded no código.
+
 ## Documentação
-Todos os endpoints estão documentados via Swagger, portanto, ao rodar o projeto, você pode conferir a documentação
-de todos os endpoints acessando [este link](http://localhost:8080/swagger-ui/index.html).
+Todos os endpoints estão documentados via Swagger. Ao rodar o projeto localmente, acesse a documentação em [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html).
+
 ## Como rodar
+
 Certifique-se de ter o [Docker](https://docs.docker.com/get-started/get-docker/) e Docker Compose instalados.
+
 1. Clone o repositório;
-2. Caso queira configurar algum e-mail para realizar os envios, preencha os dados no application.properties;
-3. No terminal da pasta raiz do projeto, crie a imagem do back-end:
+2. Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
+```
+GOOGLE_CLIENT_ID=seu-client-id
+GOOGLE_CLIENT_SECRET=seu-client-secret
+MAIL_USERNAME=seu-email@gmail.com
+MAIL_PASSWORD=sua-app-password
+JWT_SECRET=uma-string-longa-e-aleatoria
+```
+3. Crie a imagem do back-end:
 ```
 docker build -t gameboxed-back:1.0 .
 ```
@@ -45,12 +70,13 @@ docker build -t gameboxed-back:1.0 .
 ```
 docker-compose up -d
 ```
+
 Após a inicialização, a API estará disponível em http://localhost:8080
 
-_O sistema será inicializado com dois logins disponíveis, com o apelido/senha sendo o mesmo: admin e usuario.
+_O sistema será inicializado com dois logins disponíveis, com o apelido/senha sendo o mesmo: `admin` e `usuario`.
 O sistema também será populado com alguns jogos de início._
 
-_O login via Google OAuth 2.0 é opcional. Para usá-lo, é necessário configurar as variáveis de ambiente `GOOGLE_CLIENT_ID` 
-e `GOOGLE_CLIENT_SECRET`, obtidas via Google Cloud Console. Caso não configuradas, essa funcionalidade apresentará erro._
+_O login via Google OAuth 2.0 requer a configuração das variáveis `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET`, obtidas via Google Cloud Console. Sem elas, essa funcionalidade retornará erro._
+
 ## Créditos
 - Paulo Henrique - [paulooosf](http://github.com/paulooosf)
