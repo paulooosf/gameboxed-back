@@ -9,6 +9,7 @@
     <img alt="Docker" src="https://img.shields.io/badge/docker-%232496ED?style=for-the-badge&logo=docker&logoColor=%232496ED&labelColor=black">
     <img alt="Redis" src="https://img.shields.io/badge/redis-%23FF4438?style=for-the-badge&logo=redis&logoColor=%23FF4438&labelColor=black">
     <img alt="AWS" src="https://img.shields.io/badge/AWS-%23FF9900?style=for-the-badge&logo=amazonwebservices&logoColor=%23FF9900&labelColor=black">
+    <img alt="GitHub Actions" src="https://img.shields.io/badge/github%20actions-%232088FF?style=for-the-badge&logo=githubactions&logoColor=%232088FF&labelColor=black">
 </div>
 
 <p align="center">
@@ -42,6 +43,7 @@ O projeto está hospedado na AWS com a seguinte arquitetura:
 - **Cache:** Redis em container Docker na própria EC2.
 - **Registro de imagens:** Amazon ECR, utilizado para armazenar e distribuir a imagem Docker do back-end.
 - **Front-end:** hospedado no Amazon S3 com distribuição via CloudFront.
+- **CI/CD:** pipeline GitHub Actions que, a cada push na `main`, roda os testes, builda e publica a imagem no ECR e faz o deploy automático na EC2 via SSH.
 
 Todas as variáveis sensíveis (credenciais de banco, JWT secret, OAuth, e-mail) são injetadas via variáveis de ambiente em tempo de execução, sem nenhum valor hardcoded no código.
 
