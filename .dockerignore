@@ -1,0 +1,11 @@
+target/
+.git/
+.gitignore
+.env
+README.md
+*.md
+.mvn/
+mvnw
+mvnw.cmd
+grafana/
+prometheus.yml
