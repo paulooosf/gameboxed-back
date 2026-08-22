@@ -35,6 +35,7 @@ public class ConfigSeguranca {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/v3/api-docs/**","/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/autenticar/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/autenticar/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/jogos/lista").permitAll()
