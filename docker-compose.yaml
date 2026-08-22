@@ -1,6 +1,7 @@
 services:
   gameboxed-front:
     image: gameboxed-front:1.0
+    restart: unless-stopped
     ports:
       - "3000:80"
     depends_on:
@@ -8,6 +9,7 @@ services:
 
   gameboxed-back:
     image: gameboxed-back:1.0
+    restart: unless-stopped
     ports:
       - "8080:8080"
     environment:
@@ -28,6 +30,7 @@ services:
 
   db:
     image: postgres:16
+    restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U gameboxed-back -d gameboxed"]
       interval: 5s
@@ -44,8 +47,40 @@ services:
 
   redis:
     image: redis:7.2.4
+    restart: unless-stopped
     ports:
       - "6379:6379"
 
+  prometheus:
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    depends_on:
+      - gameboxed-back
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_USER=grafana
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-grafana}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+
 volumes:
   postgres_data:
+  prometheus_data:
+  grafana_data:

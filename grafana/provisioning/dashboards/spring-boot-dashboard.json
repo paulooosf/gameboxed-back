@@ -1,0 +1,98 @@
+{
+  "dashboard": {
+    "title": "Gameboxed - Spring Boot Metrics",
+    "panels": [
+      {
+        "id": 1,
+        "title": "JVM Memory Usage",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+        "targets": [
+          {
+            "expr": "jvm_memory_used_bytes{application=\"gameboxed\"}",
+            "legendFormat": "{{area}} - {{id}}"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "HTTP Request Rate",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+        "targets": [
+          {
+            "expr": "rate(http_server_requests_seconds_count{application=\"gameboxed\"}[1m])",
+            "legendFormat": "{{method}} {{uri}} {{status}}"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "HTTP Request Duration (p95)",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{application=\"gameboxed\"}[1m])) by (le, uri))",
+            "legendFormat": "{{uri}}"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Active Database Connections",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+        "targets": [
+          {
+            "expr": "hikaricp_connections_active{application=\"gameboxed\"}",
+            "legendFormat": "Active"
+          },
+          {
+            "expr": "hikaricp_connections_idle{application=\"gameboxed\"}",
+            "legendFormat": "Idle"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "CPU Usage",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
+        "targets": [
+          {
+            "expr": "system_cpu_usage{application=\"gameboxed\"}",
+            "legendFormat": "System CPU"
+          },
+          {
+            "expr": "process_cpu_usage{application=\"gameboxed\"}",
+            "legendFormat": "Process CPU"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Threads",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16},
+        "targets": [
+          {
+            "expr": "jvm_threads_live_threads{application=\"gameboxed\"}",
+            "legendFormat": "Live Threads"
+          },
+          {
+            "expr": "jvm_threads_daemon_threads{application=\"gameboxed\"}",
+            "legendFormat": "Daemon Threads"
+          }
+        ]
+      }
+    ],
+    "refresh": "5s",
+    "time": {"from": "now-15m", "to": "now"},
+    "timepicker": {},
+    "timezone": "browser",
+    "schemaVersion": 16,
+    "version": 0
+  },
+  "overwrite": true
+}
